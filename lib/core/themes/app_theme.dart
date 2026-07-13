@@ -1,0 +1,7 @@
+class AppTheme {
+  AppTheme._();
+
+
+
+
+}
