@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_explorer/core/constants/app_strings.dart';
+import 'package:movies_explorer/core/network/auth_dio.dart';
+import 'package:movies_explorer/features/auth/data/datasource/auth_api.dart';
+import 'package:movies_explorer/features/auth/data/repositories/auth_repository.dart';
+import 'package:movies_explorer/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:movies_explorer/features/auth/presentation/pages/login_view.dart';
 
 import 'core/themes/app_theme.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<AuthRepository>(
+          create: (_) => AuthRepository(AuthApi(AuthDio.create())),
+        ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => AuthBloc(context.read<AuthRepository>()),
+          ),
+        ],
+        child: const MyApp(),
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -17,7 +40,9 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: AppStrings.loginScreen,
+      routes: {'/login': (_) => const LoginScreen()},
+      //  home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
