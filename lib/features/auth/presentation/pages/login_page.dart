@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_explorer/core/utils/app_snackbar.dart';
+import 'package:movies_explorer/core/utils/helper.dart';
 import 'package:movies_explorer/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:movies_explorer/features/auth/presentation/bloc/auth_event.dart';
 import 'package:movies_explorer/features/auth/presentation/bloc/auth_state.dart';
-
-import '../../../../core/constants/app_strings.dart';
 import '../../../../core/widgets/custom_text.dart';
 import '../../../../core/widgets/custom_textfield.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool hidePassword = true;
@@ -26,7 +26,13 @@ class _LoginScreenState extends State<LoginScreen> {
     // Read provider once (outside of build methods) or use context.watch if needed
 
     return Scaffold(
-      body: BlocBuilder<AuthBloc, AuthState>(
+      body: BlocConsumer<AuthBloc, AuthState>(
+
+        listener: (context, state){
+          if(state is AuthFailure ){
+            AppSnackBar.showError(context, message: state.message);
+          }
+        },
         builder: (context, state) {
           return Container(
             decoration: const BoxDecoration(
@@ -124,12 +130,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     print("Sign in  ${emailController.text}");
-                                    context.read<AuthBloc>().add(
-                                      LoginSubmitted(
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                      ),
-                                    );
+                                    if((emailController.text.isEmpty || !Helper.isValidEmail(emailController.text)) || passwordController.text.isEmpty){
+                                      AppSnackBar.showError(context, message: "Please enter valid email or password!");
+                                    }else {
+                                      context.read<AuthBloc>().add(
+                                        LoginSubmitted(
+                                          email: emailController.text,
+                                          password: passwordController.text,
+                                        ),
+                                      );
+                                    }
+
+
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xFF6A11CB),
@@ -156,23 +168,23 @@ class _LoginScreenState extends State<LoginScreen> {
                                         ),
                                 ),
                               ),
-                              const SizedBox(height: 16),
-                              // Divider
-                              const Row(
-                                children: [
-                                  Expanded(child: Divider()),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                    ),
-                                    child: Text(
-                                      'or',
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                  ),
-                                  Expanded(child: Divider()),
-                                ],
-                              ),
+                              // const SizedBox(height: 16),
+                              // // Divider
+                              // const Row(
+                              //   children: [
+                              //     Expanded(child: Divider()),
+                              //     Padding(
+                              //       padding: EdgeInsets.symmetric(
+                              //         horizontal: 12,
+                              //       ),
+                              //       child: Text(
+                              //         'or',
+                              //         style: TextStyle(color: Colors.grey),
+                              //       ),
+                              //     ),
+                              //     Expanded(child: Divider()),
+                              //   ],
+                              // ),
                               // const SizedBox(height: 16),
                               // // Google sign‑in
                               // SizedBox(
@@ -240,12 +252,20 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+
+  bool validateEmail(String email){
+
+    return Helper.isValidEmail(email);
+  }
+
+
+
+
+
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
-
-    //
   }
 }

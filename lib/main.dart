@@ -5,7 +5,8 @@ import 'package:movies_explorer/core/network/auth_dio.dart';
 import 'package:movies_explorer/features/auth/data/datasource/auth_api.dart';
 import 'package:movies_explorer/features/auth/data/repositories/auth_repository.dart';
 import 'package:movies_explorer/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:movies_explorer/features/auth/presentation/pages/login_view.dart';
+import 'package:movies_explorer/features/auth/presentation/pages/login_page.dart';
+import 'package:movies_explorer/features/movie/presentation/pages/home_page.dart';
 
 import 'core/themes/app_theme.dart';
 
@@ -37,11 +38,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      initialRoute: AppStrings.loginScreen,
-      routes: {'/login': (_) => const LoginScreen()},
+      initialRoute: AppStrings.homeScreen,
+      routes: {
+        AppStrings.loginScreen: (_) => const LoginPage(),
+        AppStrings.homeScreen: (_) => const HomePage(),
+      },
       //  home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
