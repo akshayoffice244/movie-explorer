@@ -9,8 +9,8 @@ class MovieDio {
             connectTimeout: const Duration(seconds: 120),
             receiveTimeout: const Duration(seconds: 120),
             headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0YTExYzEzODVhZGIyYmFiYmU1YzVjOGI0YWVjYWJjYyIsIm5iZiI6MTc4MzkyNzM3NS42MjUsInN1YiI6IjZhNTQ5MjRmNWE3Y2NiMTk5MWRjY2M2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.2LpWw0FPUba73lLhd_iOUkNgYjF0wS0FlNxCiiP-gRM'
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0YTExYzEzODVhZGIyYmFiYmU1YzVjOGI0YWVjYWJjYyIsIm5iZiI6MTc4MzkyNzM3NS42MjUsInN1YiI6IjZhNTQ5MjRmNWE3Y2NiMTk5MWRjY2M2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.2LpWw0FPUba73lLhd_iOUkNgYjF0wS0FlNxCiiP-gRM',
+              'accept': 'application/json',
             }
 
         )

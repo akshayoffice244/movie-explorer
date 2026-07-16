@@ -17,13 +17,18 @@ class MovieApi {
         queryParameters: {"language": "en-US", "page": page},
       );
 
+
+      print("Response: ${response.data}");
       return MovieResponse.fromJson(response.data);
 
     } on DioException catch (e) {
 
       String message = Helper.extractError(e);
+      print("Dio Exception: status: ${e.response?.statusCode} $message");
       throw ApiException(message: message, statusCode: e.response?.statusCode);
     }catch(e){
+      print("Exception: status: ${e}");
+
       throw ApiException(message: e.toString());
     }
   }

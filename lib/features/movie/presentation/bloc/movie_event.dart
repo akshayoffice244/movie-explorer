@@ -10,9 +10,9 @@ class LoadTrendingMovies extends MovieEvent {
 }
 
 
-class LoadingPopularMovies extends MovieEvent {
+class LoadPopularMovies extends MovieEvent {
   final int page;
-  const LoadingPopularMovies({ required this.page});
+  const LoadPopularMovies({ required this.page});
 
 }
 

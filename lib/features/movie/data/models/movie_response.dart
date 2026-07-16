@@ -1,3 +1,5 @@
+import 'package:movies_explorer/core/constants/app_strings.dart';
+
 class MovieResponse {
   int? page;
   List<Results>? results;
@@ -84,6 +86,9 @@ class Results {
     voteAverage = json['vote_average'];
     voteCount = json['vote_count'];
   }
+  String get posterUrl =>
+      '${AppStrings.imageBaseUrl}$posterPath';
+
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
