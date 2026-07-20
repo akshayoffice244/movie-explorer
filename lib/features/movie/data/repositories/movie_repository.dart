@@ -28,4 +28,7 @@ class MovieRepository {
     final  response = await movieApi.getMovies(AppStrings.upcomingMovies, page);
     return response.results;
   }
+
+
+
 }

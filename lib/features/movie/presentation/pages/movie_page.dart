@@ -7,6 +7,10 @@ import 'package:movies_explorer/features/movie/presentation/bloc/movie_bloc.dart
 import 'package:movies_explorer/features/movie/presentation/bloc/movie_event.dart';
 import 'package:movies_explorer/features/movie/presentation/bloc/movie_state.dart';
 
+import '../../../search/presentation/pages/search_screen.dart';
+import '../../../theme/bloc/theme_bloc.dart';
+import '../../../theme/bloc/theme_event.dart';
+
 class MoviePage extends StatelessWidget {
   const MoviePage({super.key});
 
@@ -18,7 +22,40 @@ class MoviePage extends StatelessWidget {
     context.read<MovieBloc>().add(LoadUpcomingMovies(page: 1));
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Movie Explorer'), centerTitle: true),
+      appBar: AppBar(title: const Text('Movie Explorer'), centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const SearchScreen(),
+                ),
+              );
+            },
+          ),
+
+          IconButton(
+            icon: Icon(
+              context
+                  .watch<ThemeBloc>()
+                  .state
+                  .themeMode ==
+                  ThemeMode.dark
+                  ? Icons.light_mode
+                  : Icons.dark_mode,
+            ),
+            onPressed: () {
+              context
+                  .read<ThemeBloc>()
+                  .add(
+                ToggleTheme(),
+              );
+            },
+          )
+        ],
+      ),
       body: ListView(
         children: [
           BlocBuilder<MovieBloc, MovieState>(

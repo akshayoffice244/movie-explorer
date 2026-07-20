@@ -41,3 +41,11 @@ class Helper {
     return 'Something went wrong';
   }
 }
+
+
+enum LoadingStatus {
+  initial,
+  loading,
+  success,
+  failure,
+}

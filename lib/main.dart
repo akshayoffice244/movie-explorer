@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:movies_explorer/core/constants/app_strings.dart';
 import 'package:movies_explorer/core/network/auth_dio.dart';
 import 'package:movies_explorer/core/network/movie_dio.dart';
@@ -11,10 +13,28 @@ import 'package:movies_explorer/features/movie/data/datasource/movie_api.dart';
 import 'package:movies_explorer/features/movie/data/repositories/movie_repository.dart';
 import 'package:movies_explorer/features/movie/presentation/bloc/movie_bloc.dart';
 import 'package:movies_explorer/features/movie/presentation/pages/movie_page.dart';
+import 'package:movies_explorer/features/moviedetails/data/movie_details_api.dart';
+import 'package:movies_explorer/features/moviedetails/presentation/bloc/movie_details_bloc.dart';
+import 'package:movies_explorer/features/moviedetails/repositories/movie_details_repository.dart';
+import 'package:movies_explorer/features/search/data/datasource/search_api.dart';
+import 'package:movies_explorer/features/search/data/repositories/movie_search_repository.dart';
+import 'package:movies_explorer/features/search/data/repositories/recent_search_repository.dart';
+import 'package:movies_explorer/features/search/presentation/bloc/search_bloc.dart';
+import 'package:movies_explorer/features/theme/bloc/theme_bloc.dart';
+import 'package:movies_explorer/features/theme/bloc/theme_state.dart';
+import 'package:movies_explorer/features/theme/repository/theme_repository.dart';
 
 import 'core/themes/app_theme.dart';
 
-void main() {
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+
+  await Hive.openBox<String>('recent_searches');
+  await Hive.openBox('theme_box');
+
   runApp(
     MultiRepositoryProvider(
       providers: [
@@ -25,6 +45,22 @@ void main() {
         RepositoryProvider<MovieRepository>(
           create: (_) => MovieRepository(MovieApi(MovieDio.create())),
         ),
+
+        RepositoryProvider<MovieSearchRepository>(
+          create: (_) => MovieSearchRepository(SearchApi(MovieDio.create())),
+        ),
+
+        RepositoryProvider<RecentSearchRepository>(
+          create: (_) => RecentSearchRepository(),
+        ),
+
+        RepositoryProvider<MovieDetailsRepository>(
+          create: (_) => MovieDetailsRepository(MovieDetailsApi(MovieDio.create())),
+        ),
+
+        RepositoryProvider<ThemeRepository>(
+          create: (_) => ThemeRepository(),
+        )
       ],
       child: MultiBlocProvider(
         providers: [
@@ -34,6 +70,18 @@ void main() {
 
           BlocProvider(
             create: (context) => MovieBloc(context.read<MovieRepository>()),
+          ),
+
+          BlocProvider(
+            create: (context) => SearchBloc( movieRepository: context.read<MovieSearchRepository>(),recentSearchRepository: context.read<RecentSearchRepository>() ),
+          ),
+
+          BlocProvider(
+            create: (context) => MovieDetailsBloc( repository:  context.read<MovieDetailsRepository>() ),
+          ),
+
+          BlocProvider(
+            create: (context) => ThemeBloc( repository:  context.read<ThemeRepository>() ),
           ),
         ],
         child: const MyApp(),
@@ -48,19 +96,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      initialRoute: AppStrings.homeScreen,
-      routes: {
-        AppStrings.loginScreen: (_) => const LoginPage(),
-        AppStrings.homeScreen: (_) => const MoviePage(),
-      },
-      //  home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+    return BlocBuilder<ThemeBloc, ThemeState>(builder: (context,state){
+
+      return MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: state.themeMode,
+        initialRoute: AppStrings.homeScreen,
+        routes: {
+          AppStrings.loginScreen: (_) => const LoginPage(),
+          AppStrings.homeScreen: (_) => const MoviePage(),
+        },
+        //  home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      );
+    });
   }
 }
 
