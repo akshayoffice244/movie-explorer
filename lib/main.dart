@@ -16,6 +16,7 @@ import 'package:movies_explorer/features/movie/data/datasource/movie_api.dart';
 import 'package:movies_explorer/features/movie/data/repositories/movie_repository.dart';
 import 'package:movies_explorer/features/movie/presentation/bloc/movie_bloc.dart';
 import 'package:movies_explorer/features/movie/presentation/pages/movie_page.dart';
+import 'package:movies_explorer/features/movie/presentation/pages/view_all_page.dart';
 import 'package:movies_explorer/features/moviedetails/data/movie_details_api.dart';
 import 'package:movies_explorer/features/moviedetails/presentation/bloc/movie_details_bloc.dart';
 import 'package:movies_explorer/features/moviedetails/repositories/movie_details_repository.dart';
@@ -121,10 +122,11 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: state.themeMode,
-          initialRoute: AppStrings.homeScreen,
+          initialRoute: AppStrings.viewAll,
           routes: {
             AppStrings.loginScreen: (_) => const LoginPage(),
             AppStrings.homeScreen: (_) => const MoviePage(),
+            AppStrings.viewAll: (_) => const ViewAllPage(),
           },
           //  home: const MyHomePage(title: 'Flutter Demo Home Page'),
         );

@@ -10,6 +10,11 @@ class MovieState {
   final LoadingStatus topRatedStatus;
   final LoadingStatus upcomingStatus;
 
+  final int trendingCurrentPage;
+  final int popularCurrentPage ;
+  final int topRatedCurrentPage;
+  final int upcomingCurrentPage;
+
   final List<Results> trendingMovies;
   final List<Results> popularMovies;
   final List<Results> topRatedMovies;
@@ -24,6 +29,11 @@ class MovieState {
     this.popularStatus = LoadingStatus.initial,
     this.topRatedStatus = LoadingStatus.initial,
     this.upcomingStatus = LoadingStatus.initial,
+
+    this.trendingCurrentPage = 1,
+    this.popularCurrentPage = 1,
+    this.topRatedCurrentPage = 1,
+    this.upcomingCurrentPage = 1,
     this.trendingMovies = const [],
     this.popularMovies = const [],
     this.topRatedMovies = const [],

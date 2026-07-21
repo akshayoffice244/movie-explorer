@@ -16,4 +16,6 @@ class AppStrings {
   //screens
   static const loginScreen = "/login";
   static const homeScreen = "/home";
+
+  static const viewAll = "/view_all";
 }

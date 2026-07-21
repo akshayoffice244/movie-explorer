@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:movies_explorer/features/movie/data/models/movie_response.dart';
-import 'package:movies_explorer/features/moviedetails/models/CastModel.dart';
-import 'package:movies_explorer/features/moviedetails/models/movie_details_model.dart';
 
 import '../../../../core/network/api_exception.dart';
 import '../../../../core/utils/helper.dart';
