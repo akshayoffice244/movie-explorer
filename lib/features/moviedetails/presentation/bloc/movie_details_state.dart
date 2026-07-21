@@ -1,30 +1,26 @@
+import '../../../../core/utils/helper.dart';
 import '../../models/CastModel.dart';
 import '../../models/movie_details_model.dart';
 
-enum LoadingStatus {
-  initial,
-  loading,
-  success,
-  failure,
-}
+
 
 class MovieDetailsState {
   final LoadingStatus status;
   final MovieDetailsModel? movie;
-  final List<CastModel> cast;
+  final CastModel? cast;
   final String? errorMessage;
 
   const MovieDetailsState({
     this.status = LoadingStatus.initial,
     this.movie,
-    this.cast = const [],
+    this.cast  ,
     this.errorMessage,
   });
 
   MovieDetailsState copyWith({
     LoadingStatus? status,
     MovieDetailsModel? movie,
-    List<CastModel>? cast,
+    CastModel? cast,
     String? errorMessage,
   }) {
     return MovieDetailsState(

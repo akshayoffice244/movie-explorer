@@ -1,6 +1,8 @@
 import 'package:movies_explorer/features/movie/data/models/movie_response.dart';
 
-enum LoadingStatus { initial, loading, success, failure }
+import '../../../../core/utils/helper.dart';
+
+
 
 class MovieState {
   final LoadingStatus trendingStatus;

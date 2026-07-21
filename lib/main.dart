@@ -9,6 +9,9 @@ import 'package:movies_explorer/features/auth/data/datasource/auth_api.dart';
 import 'package:movies_explorer/features/auth/data/repositories/auth_repository.dart';
 import 'package:movies_explorer/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:movies_explorer/features/auth/presentation/pages/login_page.dart';
+import 'package:movies_explorer/features/favorites/data/models/favorite_movie_model.dart';
+import 'package:movies_explorer/features/favorites/data/repositories/favorite_repository.dart';
+import 'package:movies_explorer/features/favorites/presentation/bloc/favorite_bloc.dart';
 import 'package:movies_explorer/features/movie/data/datasource/movie_api.dart';
 import 'package:movies_explorer/features/movie/data/repositories/movie_repository.dart';
 import 'package:movies_explorer/features/movie/presentation/bloc/movie_bloc.dart';
@@ -27,14 +30,15 @@ import 'package:movies_explorer/features/theme/repository/theme_repository.dart'
 import 'core/themes/app_theme.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
 
   await Hive.initFlutter();
 
   await Hive.openBox<String>('recent_searches');
   await Hive.openBox('theme_box');
+  Hive.registerAdapter(FavoriteMovieModelAdapter());
 
+  await Hive.openBox<FavoriteMovieModel>('favorites');
   runApp(
     MultiRepositoryProvider(
       providers: [
@@ -55,12 +59,14 @@ void main() async {
         ),
 
         RepositoryProvider<MovieDetailsRepository>(
-          create: (_) => MovieDetailsRepository(MovieDetailsApi(MovieDio.create())),
+          create: (_) =>
+              MovieDetailsRepository(MovieDetailsApi(MovieDio.create())),
         ),
-
-        RepositoryProvider<ThemeRepository>(
-          create: (_) => ThemeRepository(),
-        )
+        RepositoryProvider<FavoriteRepository>(
+          create: (_) =>
+              FavoriteRepository()),
+        
+        RepositoryProvider<ThemeRepository>(create: (_) => ThemeRepository()),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -73,15 +79,26 @@ void main() async {
           ),
 
           BlocProvider(
-            create: (context) => SearchBloc( movieRepository: context.read<MovieSearchRepository>(),recentSearchRepository: context.read<RecentSearchRepository>() ),
+            create: (context) => SearchBloc(
+              movieRepository: context.read<MovieSearchRepository>(),
+              recentSearchRepository: context.read<RecentSearchRepository>(),
+            ),
           ),
 
           BlocProvider(
-            create: (context) => MovieDetailsBloc( repository:  context.read<MovieDetailsRepository>() ),
+            create: (context) => MovieDetailsBloc(
+              repository: context.read<MovieDetailsRepository>(),
+            ),
           ),
 
           BlocProvider(
-            create: (context) => ThemeBloc( repository:  context.read<ThemeRepository>() ),
+            create: (context) =>
+                ThemeBloc(repository: context.read<ThemeRepository>()),
+          ),
+
+          BlocProvider(
+            create: (context) =>
+               FavoriteBloc(repository: context.read<FavoriteRepository>()),
           ),
         ],
         child: const MyApp(),
@@ -96,22 +113,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeBloc, ThemeState>(builder: (context,state){
-
-      return MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: state.themeMode,
-        initialRoute: AppStrings.homeScreen,
-        routes: {
-          AppStrings.loginScreen: (_) => const LoginPage(),
-          AppStrings.homeScreen: (_) => const MoviePage(),
-        },
-        //  home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      );
-    });
+    return BlocBuilder<ThemeBloc, ThemeState>(
+      builder: (context, state) {
+        return MaterialApp(
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: state.themeMode,
+          initialRoute: AppStrings.homeScreen,
+          routes: {
+            AppStrings.loginScreen: (_) => const LoginPage(),
+            AppStrings.homeScreen: (_) => const MoviePage(),
+          },
+          //  home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        );
+      },
+    );
   }
 }
-

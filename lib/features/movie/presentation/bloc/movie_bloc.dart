@@ -5,6 +5,8 @@ import 'package:movies_explorer/features/movie/data/repositories/movie_repositor
 import 'package:movies_explorer/features/movie/presentation/bloc/movie_event.dart';
 import 'package:movies_explorer/features/movie/presentation/bloc/movie_state.dart';
 
+import '../../../../core/utils/helper.dart';
+
 class MovieBloc extends Bloc<MovieEvent, MovieState> {
 
   final MovieRepository movieRepository;
@@ -43,7 +45,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
   }
 
   Future<void> _loadTopRatedMovies(LoadTopMovies event, Emitter<MovieState> emit) async{
-    emit(state.copyWith(popularStatus: LoadingStatus.loading));
+    emit(state.copyWith(topRatedStatus: LoadingStatus.loading));
     try{
       List<Results>? movies=  await movieRepository.getTopRatedMovies(event.page);
       emit(state.copyWith(topRatedStatus: LoadingStatus.success, topRatedMovies: movies ?? [] ));

@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_explorer/features/moviedetails/repositories/movie_details_repository.dart';
 
+import '../../../../core/utils/helper.dart';
 import '../../models/CastModel.dart';
 import '../../models/movie_details_model.dart';
 import 'movie_details_event.dart';
@@ -29,14 +30,14 @@ class MovieDetailsBloc
     try {
       final results = await Future.wait([
         repository.getMovieDetails(event.movieId.toString()),
-        repository.getMovieDetails(event.movieId.toString()),
+        repository.getMovieCast(event.movieId.toString()),
       ]);
 
       emit(
         state.copyWith(
           status: LoadingStatus.success,
           movie: results[0] as MovieDetailsModel,
-          cast: results[1] as List<CastModel>,
+          cast: results[1] as CastModel,
         ),
       );
     } catch (e) {

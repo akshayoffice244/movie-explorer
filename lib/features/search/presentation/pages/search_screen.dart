@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_explorer/features/moviedetails/presentation/bloc/movie_details_bloc.dart';
+import 'package:movies_explorer/features/moviedetails/presentation/bloc/movie_details_event.dart';
 
 import '../../../../core/utils/helper.dart';
 import '../../../movie/data/models/movie_response.dart';
@@ -271,6 +273,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
 
           onTap: () {
+            context.read<MovieDetailsBloc>().add(LoadMovieDetails(movie.id ?? 0));
             Navigator.push(
               context,
               MaterialPageRoute(
