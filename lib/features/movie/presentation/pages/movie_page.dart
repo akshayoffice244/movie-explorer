@@ -321,6 +321,7 @@ class MovieSectionWidget extends StatelessWidget {
                   },
                 ),
               ),
+              
             ],
           ],
         );
@@ -335,13 +336,21 @@ class MovieSectionWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              title,
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-          ),
+         Row(
+           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+           children: [
+             Padding(
+               padding: const EdgeInsets.symmetric(horizontal: 16),
+               child: Text(
+                 title,
+                 style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+               ),
+             ),
+             //View All
+             TextButton(onPressed: (){}, child: CustomText(text: "View All"))
+             
+           ],
+         ),
           const SizedBox(height: 12),
           SizedBox(
             height: 250,
