@@ -10,10 +10,10 @@ class MovieState {
   final LoadingStatus topRatedStatus;
   final LoadingStatus upcomingStatus;
 
-  final int trendingCurrentPage;
-  final int popularCurrentPage ;
-  final int topRatedCurrentPage;
-  final int upcomingCurrentPage;
+  final int trendingTotalPage;
+  final int popularTotalPage ;
+  final int topRatedTotalPage;
+  final int upcomingTotalPage;
 
   final List<Results> trendingMovies;
   final List<Results> popularMovies;
@@ -30,10 +30,10 @@ class MovieState {
     this.topRatedStatus = LoadingStatus.initial,
     this.upcomingStatus = LoadingStatus.initial,
 
-    this.trendingCurrentPage = 1,
-    this.popularCurrentPage = 1,
-    this.topRatedCurrentPage = 1,
-    this.upcomingCurrentPage = 1,
+    this.trendingTotalPage = 1,
+    this.popularTotalPage = 1,
+    this.topRatedTotalPage = 1,
+    this.upcomingTotalPage = 1,
     this.trendingMovies = const [],
     this.popularMovies = const [],
     this.topRatedMovies = const [],
@@ -59,6 +59,11 @@ class MovieState {
     String? popularError,
     String? topRatedError,
     String? upcomingError,
+
+     int? trendingTotalPage,
+     int? popularTotalPage ,
+     int? topRatedTotalPage,
+     int? upcomingTotalPage,
   }) {
     return MovieState(
       trendingStatus: trendingStatus ?? this.trendingStatus,
@@ -73,6 +78,10 @@ class MovieState {
       popularError: popularError ?? this.popularError,
       topRatedError: topRatedError ?? this.topRatedError,
       upcomingError: upcomingError ?? this.upcomingError,
+        trendingTotalPage: trendingTotalPage ?? this.trendingTotalPage,
+        popularTotalPage: popularTotalPage ?? this.popularTotalPage,
+      topRatedTotalPage: topRatedTotalPage ?? this.topRatedTotalPage,
+      upcomingTotalPage: upcomingTotalPage ?? this.upcomingTotalPage
     );
   }
 }

@@ -9,24 +9,24 @@ class MovieRepository {
 
 
 
-  Future<List<Results>?> getTrendingMovies(int page) async{
+  Future<MovieResponse> getTrendingMovies(int page) async{
     final response = await movieApi.getMovies(AppStrings.trendingMovies, page);
-    return response.results;
+    return response;
   }
 
-  Future<List<Results>?> getPopularMovies(int page) async{
+  Future<MovieResponse> getPopularMovies(int page) async{
     final response = await movieApi.getMovies(AppStrings.popularMovies, page);
-    return response.results;
+    return response;
   }
 
-  Future<List<Results>?> getTopRatedMovies(int page) async{
+  Future<MovieResponse> getTopRatedMovies(int page) async{
     final  response = await movieApi.getMovies(AppStrings.topRatedMovies, page);
-    return response.results;
+    return response;
   }
 
-  Future<List<Results>?> getUpcomingMovies(int page) async{
+  Future<MovieResponse> getUpcomingMovies(int page) async{
     final  response = await movieApi.getMovies(AppStrings.upcomingMovies, page);
-    return response.results;
+    return response;
   }
 
 

@@ -22,7 +22,9 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
   Future<void> _loadTrendingMovies(LoadTrendingMovies event, Emitter<MovieState> emit) async{
     emit(state.copyWith(trendingStatus: LoadingStatus.loading));
     try{
-      List<Results>? movies=  await movieRepository.getTrendingMovies(event.page);
+      MovieResponse response=  await movieRepository.getTrendingMovies(event.page);
+      List<Results>? movies = response.results;
+
         emit(state.copyWith(trendingStatus: LoadingStatus.success, trendingMovies: movies ?? [] ));
     }on ApiException catch(e){
       emit(state.copyWith(trendingStatus: LoadingStatus.failure ,trendingError: e.message));
@@ -35,7 +37,9 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
   Future<void> _loadPopularMovies(LoadPopularMovies event, Emitter<MovieState> emit) async{
     emit(state.copyWith(popularStatus: LoadingStatus.loading));
     try{
-      List<Results>? movies=  await movieRepository.getPopularMovies(event.page);
+      MovieResponse response =  await movieRepository.getPopularMovies(event.page);
+      List<Results>? movies = response.results;
+
       emit(state.copyWith(popularStatus: LoadingStatus.success, popularMovies: movies ?? [] ));
     }on ApiException catch(e){
       emit(state.copyWith(popularStatus: LoadingStatus.failure ,popularError: e.message));
@@ -47,7 +51,8 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
   Future<void> _loadTopRatedMovies(LoadTopMovies event, Emitter<MovieState> emit) async{
     emit(state.copyWith(topRatedStatus: LoadingStatus.loading));
     try{
-      List<Results>? movies=  await movieRepository.getTopRatedMovies(event.page);
+      MovieResponse response =  await movieRepository.getTopRatedMovies(event.page);
+      List<Results>? movies = response.results;
       emit(state.copyWith(topRatedStatus: LoadingStatus.success, topRatedMovies: movies ?? [] ));
     }on ApiException catch(e){
       emit(state.copyWith(topRatedStatus: LoadingStatus.failure ,topRatedError: e.message));
@@ -60,7 +65,8 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
   Future<void> _loadUpcomingMovies(LoadUpcomingMovies event, Emitter<MovieState> emit) async{
     emit(state.copyWith(upcomingStatus: LoadingStatus.loading));
     try{
-      List<Results>? movies=  await movieRepository.getUpcomingMovies(event.page);
+      MovieResponse response =  await movieRepository.getUpcomingMovies(event.page);
+      List<Results>? movies = response.results;
       emit(state.copyWith(upcomingStatus: LoadingStatus.success, upcomingMovies: movies ?? [] ));
     }on ApiException catch(e){
       emit(state.copyWith(upcomingStatus: LoadingStatus.failure ,upcomingError: e.message));

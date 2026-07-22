@@ -122,11 +122,11 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: state.themeMode,
-          initialRoute: AppStrings.viewAll,
+          initialRoute: AppStrings.homeScreen,
           routes: {
             AppStrings.loginScreen: (_) => const LoginPage(),
             AppStrings.homeScreen: (_) => const MoviePage(),
-            AppStrings.viewAll: (_) => const ViewAllPage(),
+            AppStrings.viewAll: (_) => const ViewAllPage(movieSectionType: MovieSectionType.trendingMovieSection,),
           },
           //  home: const MyHomePage(title: 'Flutter Demo Home Page'),
         );
