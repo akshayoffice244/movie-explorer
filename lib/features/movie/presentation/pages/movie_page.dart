@@ -31,32 +31,26 @@ class MoviePage extends StatelessWidget {
     context.read<MovieBloc>().add(LoadTopMovies(page: 1));
     context.read<MovieBloc>().add(LoadPopularMovies(page: 1));
     context.read<MovieBloc>().add(LoadUpcomingMovies(page: 1));
- void loadMovies(MovieSectionType movieSectionType){
+    void loadMovies(MovieSectionType movieSectionType) {
+      switch (movieSectionType) {
+        case MovieSectionType.trendingMovieSection:
+          context.read<MovieBloc>().add(LoadTrendingMovies(page: 1));
+          break;
 
-   switch (movieSectionType) {
-     case MovieSectionType.trendingMovieSection:
-       context.read<MovieBloc>().add(
-         LoadTrendingMovies(page: 1),
-       );
-       break;
+        case MovieSectionType.popularMovieSection:
+          context.read<MovieBloc>().add(LoadPopularMovies(page: 1));
+          break;
 
-     case MovieSectionType.popularMovieSection:
-       context.read<MovieBloc>().add(
-         LoadPopularMovies(page: 1),
-       );
-       break;
+        case MovieSectionType.topRatedMovieSection:
+          context.read<MovieBloc>().add(LoadTopMovies(page: 1));
+          break;
 
-     case MovieSectionType.topRatedMovieSection:
-       context.read<MovieBloc>().add(LoadTopMovies(page: 1));
-       break;
+        case MovieSectionType.upcomingMovieSection:
+          context.read<MovieBloc>().add(LoadUpcomingMovies(page: 1));
+          break;
+      }
+    }
 
-     case MovieSectionType.upcomingMovieSection:
-       context.read<MovieBloc>().add(
-         LoadUpcomingMovies(page: 1),
-       );
-       break;
-   }
- }
     return Scaffold(
       appBar: AppBar(
         title: const CustomText(text: 'Movie Explorer'),
@@ -108,14 +102,14 @@ class MoviePage extends StatelessWidget {
                     title: "Trending Movies",
                     state: state,
                     movieSectionType: MovieSectionType.trendingMovieSection,
-                    loadMovies: (){
+                    loadMovies: () {
                       loadMovies(MovieSectionType.trendingMovieSection);
                     },
                   ),
                   MovieSectionWidget(
                     title: "Popular Movies",
                     state: state,
-                    loadMovies: (){
+                    loadMovies: () {
                       loadMovies(MovieSectionType.popularMovieSection);
                     },
                     movieSectionType: MovieSectionType.popularMovieSection,
@@ -123,7 +117,7 @@ class MoviePage extends StatelessWidget {
                   MovieSectionWidget(
                     title: "Top Rated Movies",
                     state: state,
-                    loadMovies: (){
+                    loadMovies: () {
                       loadMovies(MovieSectionType.topRatedMovieSection);
                     },
                     movieSectionType: MovieSectionType.topRatedMovieSection,
@@ -131,7 +125,7 @@ class MoviePage extends StatelessWidget {
                   MovieSectionWidget(
                     title: "Upcoming Movies",
                     state: state,
-                    loadMovies: (){
+                    loadMovies: () {
                       loadMovies(MovieSectionType.upcomingMovieSection);
                     },
                     movieSectionType: MovieSectionType.upcomingMovieSection,
@@ -158,8 +152,8 @@ class MovieSectionWidget extends StatelessWidget {
     required this.title,
     required this.state,
     required this.movieSectionType,
-     this.scrollDirection = Axis.horizontal,
-    required this.loadMovies
+    this.scrollDirection = Axis.horizontal,
+    required this.loadMovies,
   });
 
   final Function loadMovies;
@@ -247,26 +241,29 @@ class MovieSectionWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (isLoading) ...[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [LoadingWidget(
+              Expanded(
+                child: ListView.builder(
 
-
-                )],
+                  scrollDirection: scrollDirection,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  itemCount: 7,
+                  itemBuilder: (context, index) =>
+                      LoadingWidget(scrollDirection: scrollDirection),
+                ),
               ),
             ],
             if (isFailed) ...[
               Row(
-                mainAxisAlignment:.center ,
+                mainAxisAlignment: .center,
                 children: [
                   Column(
-
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomText(text: message ?? "Something went wrong!"),
                       IconButton(
                         onPressed: () {
-                            loadMovies();
+                          loadMovies();
                         },
                         icon: Icon(Icons.refresh),
                       ),
@@ -286,37 +283,39 @@ class MovieSectionWidget extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final movie = list[index];
 
-                     if(scrollDirection == Axis.horizontal){
-                       return MovieGridWidget(
-                         callBack: () {
-                           context.read<MovieDetailsBloc>().add(
-                             LoadMovieDetails(movie.id ?? 0),
-                           );
-                           Navigator.push(
-                             context,
-                             MaterialPageRoute(
-                               builder: (context) =>
-                                   MovieDetailsScreen(movieId: movie.id ?? 0),
-                             ),
-                           );
-                         },
-                         movie: movie,
-                       );
-                     }else{
-                       return MovieTileWidget(   callBack: () {
-                         context.read<MovieDetailsBloc>().add(
-                           LoadMovieDetails(movie.id ?? 0),
-                         );
-                         Navigator.push(
-                           context,
-                           MaterialPageRoute(
-                             builder: (context) =>
-                                 MovieDetailsScreen(movieId: movie.id ?? 0),
-                           ),
-                         );
-                       },
-                         movie: movie);
-                     }
+                    if (scrollDirection == Axis.horizontal) {
+                      return MovieGridWidget(
+                        callBack: () {
+                          context.read<MovieDetailsBloc>().add(
+                            LoadMovieDetails(movie.id ?? 0),
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  MovieDetailsScreen(movieId: movie.id ?? 0),
+                            ),
+                          );
+                        },
+                        movie: movie,
+                      );
+                    } else {
+                      return MovieTileWidget(
+                        callBack: () {
+                          context.read<MovieDetailsBloc>().add(
+                            LoadMovieDetails(movie.id ?? 0),
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  MovieDetailsScreen(movieId: movie.id ?? 0),
+                            ),
+                          );
+                        },
+                        movie: movie,
+                      );
+                    }
                   },
                 ),
               ),
@@ -365,7 +364,7 @@ class MovieSectionWidget extends StatelessWidget {
             ),
             const SizedBox(height: 12),
           ],
-          if(scrollDirection == Axis.horizontal)...[
+          if (scrollDirection == Axis.horizontal) ...[
             SizedBox(
               height: 250,
               child: Column(
@@ -374,10 +373,9 @@ class MovieSectionWidget extends StatelessWidget {
                 children: [Expanded(child: createList(state))],
               ),
             ),
-          ]else...[
-            Expanded(child: createList(state))
-          ]
-
+          ] else ...[
+            Expanded(child: createList(state)),
+          ],
         ],
       ),
     );
