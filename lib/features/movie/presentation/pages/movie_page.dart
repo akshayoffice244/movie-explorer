@@ -81,7 +81,10 @@ class MoviePage extends StatelessWidget {
 
           IconButton(
             icon: Icon(
-              context.watch<ThemeBloc>().state.themeMode == ThemeMode.dark
+              context
+                  .watch<ThemeBloc>()
+                  .state
+                  .themeMode == ThemeMode.dark
                   ? Icons.light_mode
                   : Icons.dark_mode,
             ),
@@ -339,12 +342,10 @@ class MovieSectionWidget extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    title,
-                    style: const TextStyle(
+                  child: CustomText(
+                      text: title,
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                    ),
                   ),
                 ),
                 //View All
@@ -373,9 +374,10 @@ class MovieSectionWidget extends StatelessWidget {
                 children: [Expanded(child: createList(state))],
               ),
             ),
-          ] else ...[
-            Expanded(child: createList(state)),
-          ],
+          ] else
+            ...[
+              Expanded(child: createList(state)),
+            ],
         ],
       ),
     );

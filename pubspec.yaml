@@ -40,8 +40,10 @@ dependencies:
   cached_network_image: ^3.4.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  hive_generator: ^2.0.1
+#  hive_generator: ^2.0.1
   shimmer: ^3.0.0
+  mockito: ^5.6.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -52,7 +54,11 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
-  build_runner: 2.4.13 # Use the latest version
+  bloc_test: ^10.0.0          # Use 9.x, not 10.x (10.x requires test ^1.24.0 which conflicts)
+           # or any 5.4.x
+  build_runner: ^2.4.11
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
